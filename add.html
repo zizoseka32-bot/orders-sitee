@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>إضافة أوردر جديد</title>
+  <style>
+    body { font-family: Arial, sans-serif; direction: rtl; max-width: 600px; margin: 20px auto; }
+    label { display: block; margin-top: 10px; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 15px; padding: 10px 20px; font-size: 16px; }
+    a.logout { display: inline-block; margin-top: 15px; color: red; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>إضافة أوردر جديد</h2>
+
+  <a class="logout" id="logoutBtn">تسجيل الخروج</a>
+
+  <form id="orderForm">
+    <label>اسم العميل:
+      <input type="text" id="clientName" required />
+    </label>
+    <label>المنتج:
+      <input type="text" id="product" required />
+    </label>
+    <label>الحالة:
+      <select id="status" required>
+        <option value="">اختر الحالة</option>
+        <option value="جديد">جديد</option>
+        <option value="قيد التنفيذ">قيد التنفيذ</option>
+        <option value="تم">تم</option>
+      </select>
+    </label>
+    <label>التاريخ:
+      <input type="date" id="date" required />
+    </label>
+    <label>العنوان:
+      <textarea id="address" rows="3" required></textarea>
+    </label>
+    <button type="submit">إضافة الأوردر</button>
+  </form>
+  <p><a href="orders.html">عرض كل الأوردرات</a></p>
+
+  <script>
+    if(localStorage.getItem('loggedIn') !== 'true') {
+      window.location.href = 'login.html';
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('loggedIn');
+      window.location.href = 'login.html';
+    });
+
+    const form = document.getElementById('orderForm');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const order = {
+        clientName: document.getElementById('clientName').value.trim(),
+        product: document.getElementById('product').value.trim(),
+        status: document.getElementById('status').value,
+        date: document.getElementById('date').value,
+        address: document.getElementById('address').value.trim()
+      };
+
+      let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
+
+      alert('تم إضافة الأوردر بنجاح!');
+      form.reset();
+    });
+  </script>
+</body>
+</html>

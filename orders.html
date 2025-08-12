@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>عرض الأوردرات</title>
+  <style>
+    body { font-family: Arial, sans-serif; direction: rtl; max-width: 800px; margin: 20px auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #aaa; padding: 8px; text-align: center; }
+    th { background-color: #eee; }
+    caption { font-size: 24px; margin-bottom: 10px; }
+    a.logout { display: inline-block; margin-top: 15px; color: red; cursor: pointer; }
+    a { display: inline-block; margin-top: 15px; margin-left: 15px; }
+  </style>
+</head>
+<body>
+  <h2>كل الأوردرات</h2>
+
+  <a class="logout" id="logoutBtn">تسجيل الخروج</a>
+  <a href="add.html">إضافة أوردر جديد</a>
+
+  <table id="ordersTable">
+    <thead>
+      <tr>
+        <th>اسم العميل</th>
+        <th>المنتج</th>
+        <th>الحالة</th>
+        <th>التاريخ</th>
+        <th>العنوان</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    if(localStorage.getItem('loggedIn') !== 'true') {
+      window.location.href = 'login.html';
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('loggedIn');
+      window.location.href = 'login.html';
+    });
+
+    const tbody = document.querySelector('#ordersTable tbody');
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+    if (orders.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5">لا توجد أوردرات حتى الآن.</td></tr>';
+    } else {
+      orders.forEach(order => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${order.clientName}</td>
+          <td>${order.product}</td>
+          <td>${order.status}</td>
+          <td>${order.date}</td>
+          <td>${order.address}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  </script>
+</body>
+</html>

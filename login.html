@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>تسجيل الدخول</title>
+  <style>
+    body { font-family: Arial, sans-serif; direction: rtl; max-width: 400px; margin: 50px auto; }
+    label { display: block; margin-top: 15px; }
+    input { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 20px; width: 100%; font-size: 16px; }
+    .error { color: red; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>تسجيل الدخول</h2>
+  <form id="loginForm">
+    <label>اسم المستخدم:
+      <input type="text" id="username" required />
+    </label>
+    <label>كلمة المرور:
+      <input type="password" id="password" required />
+    </label>
+    <button type="submit">دخول</button>
+    <div id="errorMsg" class="error"></div>
+  </form>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // اسم المستخدم وكلمة المرور الثابتة
+      if(username === 'zuz' && password === 'zizoseka32') {
+        localStorage.setItem('loggedIn', 'true');
+        window.location.href = 'add.html';
+      } else {
+        errorMsg.textContent = 'غلط يا شمام ممنوع الدخول';
+      }
+    });
+
+    window.onload = function() {
+      if(localStorage.getItem('loggedIn') === 'true') {
+        window.location.href = 'add.html';
+      }
+    }
+  </script>
+</body>
+</html>
